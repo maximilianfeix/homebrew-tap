@@ -1,0 +1,77 @@
+name: update proxy-scraper
+
+# Once a day: if PyPI has a newer proxy-scraper-cli, update the formula (url, sha256 and the Python
+# resources), build it from source, test and audit it, and only then commit. Homebrew only resolves
+# packages that are at least a day old, so it takes the newest release older than 25 hours.
+on:
+  schedule:
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: proxy-scraper
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
+      HOMEBREW_NO_ENV_HINTS: "1"
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0   # brew taps it from here, and git won't clone a shallow repo
+
+      - name: Newer release on PyPI?
+        id: check
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, re, sys, urllib.request
+          from datetime import datetime, timedelta, timezone
+
+          def key(v):
+              return tuple(int(p) for p in v.split("."))
+
+          formula = open("Formula/proxy-scraper.rb", encoding="utf-8").read()
+          current = re.search(r"/proxy_scraper_cli-([\d.]+)\.tar\.gz", formula).group(1)
+          data = json.load(urllib.request.urlopen("https://pypi.org/pypi/proxy-scraper-cli/json"))
+          cutoff = datetime.now(timezone.utc) - timedelta(hours=25)
+          ready = [v for v, files in data["releases"].items() if re.fullmatch(r"\d+(\.\d+)*", v) and any(
+              f["packagetype"] == "sdist" and not f["yanked"]
+              and datetime.fromisoformat(f["upload_time_iso_8601"].replace("Z", "+00:00")) < cutoff
+              for f in files)]
+          newest = max(ready, key=key)
+          print(f"formula {current}, newest release older than a day {newest}, on PyPI {data['info']['version']}",
+                file=sys.stderr)
+          if key(newest) > key(current):
+              print(f"version={newest}")
+          PY
+
+      - name: Update, build, test and audit
+        if: steps.check.outputs.version
+        env:
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          brew tap maximilianfeix/tap "$GITHUB_WORKSPACE"
+          brew bump-formula-pr --write-only --no-audit --version "$VERSION" maximilianfeix/tap/proxy-scraper
+          brew install --build-from-source maximilianfeix/tap/proxy-scraper
+          brew test maximilianfeix/tap/proxy-scraper
+          brew audit --strict --online maximilianfeix/tap/proxy-scraper
+          cp "$(brew --repo maximilianfeix/tap)/Formula/proxy-scraper.rb" Formula/proxy-scraper.rb
+
+      - name: Commit
+        if: steps.check.outputs.version
+        env:
+          VERSION: ${{ steps.check.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/proxy-scraper.rb
+          git commit -m "proxy-scraper $VERSION"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

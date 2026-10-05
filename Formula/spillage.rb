@@ -1,8 +1,8 @@
 class Spillage < Formula
   desc "Find the API keys your coding agents spilled into their logs"
   homepage "https://maximilianfeix.github.io/spillage/"
-  url "https://github.com/maximilianfeix/spillage/archive/refs/tags/v0.6.9.tar.gz"
-  sha256 "338f6eeef8834c9fdc37c3dfbc8381a2aacf1d2b5abda93c6e48d30aa3e2c669"
+  url "https://github.com/maximilianfeix/spillage/archive/refs/tags/v0.7.0.tar.gz"
+  sha256 "5f348cb926dee8c1548a3916d70b4bd58ce9cc0cf2ae4dc2989ed2c50ffe7805"
   license "MIT"
 
   depends_on "python@3.14"

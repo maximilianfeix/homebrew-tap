@@ -1,8 +1,8 @@
 class Spillage < Formula
   desc "Keep API keys out of your coding agents: block, find and scrub leaks"
   homepage "https://maximilianfeix.github.io/spillage/"
-  url "https://github.com/maximilianfeix/spillage/archive/refs/tags/v0.9.2.tar.gz"
-  sha256 "3273de6a4d54b48ae529883a1a4b078c19bdad05657b55890475b3636b1d96fe"
+  url "https://github.com/maximilianfeix/spillage/archive/refs/tags/v0.10.0.tar.gz"
+  sha256 "2b68c3d6437316f48dda99ce14cf48a0169c619db058da7308b62a2370d04fe1"
   license "MIT"
 
   depends_on "python@3.14"

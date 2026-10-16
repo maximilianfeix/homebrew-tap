@@ -3,8 +3,8 @@ class ProxyScraper < Formula
 
   desc "Free proxies that actually work: 700+ sources, every hit verified"
   homepage "https://github.com/maximilianfeix/proxy-scraper"
-  url "https://files.pythonhosted.org/packages/e8/10/6a796d32e568bfd19aea8c259598aac55c938c9a96d1e8a547c96354f7f6/proxy_scraper_cli-1.28.0.tar.gz"
-  sha256 "f438983b4feb53ea3cc9aa1d96a957f964cda170b7eddc6016c6ef1e30e836b9"
+  url "https://files.pythonhosted.org/packages/18/04/86b65a2571c8229a2c62e46ecbb1dc32d696ea69a3c5d2c46685ea346991/proxy_scraper_cli-1.29.0.tar.gz"
+  sha256 "68f1fde13bce009174ed9442f18c2b02e7951d8de2efd9a4cf8a4f1880c1c933"
   license "MIT"
 
   depends_on "python@3.14"

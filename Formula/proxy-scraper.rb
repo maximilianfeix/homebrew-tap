@@ -3,15 +3,15 @@ class ProxyScraper < Formula
 
   desc "Free proxies that actually work: 700+ sources, every hit verified"
   homepage "https://github.com/maximilianfeix/proxy-scraper"
-  url "https://files.pythonhosted.org/packages/4a/3a/eecbb27c06ed6afda85ed7a7515b580967fba8d0e8ecb2c09078623f9ee3/proxy_scraper_cli-1.30.0.tar.gz"
-  sha256 "8959b7be3da9da5ecb0259c618c66992688735568a3996093ab435b7eac1baab"
+  url "https://files.pythonhosted.org/packages/64/08/cb1fe53e27ca0463231dedb9d6b15665563df0a63bd3d127b05b90ae53e4/proxy_scraper_cli-1.31.0.tar.gz"
+  sha256 "5e5abf7d3c8826508b1d504a97526805771306ddafad1914150ef1db1d9de184"
   license "MIT"
 
   depends_on "python@3.14"
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/a3/c2/24167ea9858356b47a87a50d39908bfdb72ceeefe0041586e704e5376b3a/certifi-2026.7.22.tar.gz"
-    sha256 "741e2c3b351ddf169a738da9f2c048608ff7f2c5cc02f1ebc6b118bb090d5d55"
+    url "https://files.pythonhosted.org/packages/fd/11/b524cbd9bbdaca58608e4cf4053fd463417549e1959fa8d3aa18319f9555/certifi-2026.10.23.tar.gz"
+    sha256 "a9895e6e2758b371e0545e321a3a8fd1fcfd9829ada8824a936dfb16aaaf36cd"
   end
 
   resource "markdown-it-py" do
